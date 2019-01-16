@@ -58,7 +58,7 @@ public class MessageActorController extends AbstractController {
 
 	// Save
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid @ModelAttribute("message") Message mess, final BindingResult bindingResult) {
+	public ModelAndView save(@Valid Message mess, final BindingResult bindingResult) {
 		ModelAndView result;
 		Collection<Actor> actors;
 		Actor actor;
