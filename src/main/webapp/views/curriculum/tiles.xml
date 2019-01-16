@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+	<definition name="curriculum/create" extends="master.page">
+		<put-attribute name="title" value="Curriculum: Create" />
+		<put-attribute name="body" value="/views/curriculum/create.jsp" />
+	</definition>
+
+	<definition name="curriculum/editPersonalRecord" extends="master.page">	
+		<put-attribute name="title" value="Personal Record: Edit" />
+		<put-attribute name="body" value="/views/curriculum/editPersonalRecord.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editProfessionalRecord" extends="master.page">	
+		<put-attribute name="title" value="Professional Record: Edit" />
+		<put-attribute name="body" value="/views/curriculum/editProfessionalRecord.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editEducationRecord" extends="master.page">	
+		<put-attribute name="title" value="Education Record: Edit " />
+		<put-attribute name="body" value="/views/curriculum/editEducationRecord.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editEndorserRecord" extends="master.page">	
+		<put-attribute name="title" value="Endorser Record: Edit " />
+		<put-attribute name="body" value="/views/curriculum/editEndorserRecord.jsp" />
+	</definition>
+	
+	<definition name="curriculum/editMiscellaneousRecord" extends="master.page">	
+		<put-attribute name="title" value="Miscellaneous Record: Edit " />
+		<put-attribute name="body" value="/views/curriculum/editMiscellaneousRecord.jsp" />
+	</definition>
+
+</tiles-definitions>
