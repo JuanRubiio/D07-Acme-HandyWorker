@@ -94,7 +94,7 @@ public class AdministratorService {
 	public Double query6() {
 		return this.administratorRepository.query6();
 	}
-	public HandyWorker query7() {
+	public Double query7() {
 		return this.administratorRepository.query7();
 	}
 	public Double query8() {
@@ -103,22 +103,8 @@ public class AdministratorService {
 	public Customer query9() {
 		return this.administratorRepository.query9();
 	}
-	public Double query10() {
+	public HandyWorker query10() {
 		return this.administratorRepository.query10();
 	}
-	public List<Object> query11() {
-		return this.administratorRepository.query11();
-	}
-	public List<Object> query12() {
-		return this.administratorRepository.query12();
-	}
-	public Double query13() {
-		return this.administratorRepository.query13();
-	}
-	public Customer query14() {
-		return this.administratorRepository.query14();
-	}
-	public HandyWorker query15() {
-		return this.administratorRepository.query15();
-	}
+
 }

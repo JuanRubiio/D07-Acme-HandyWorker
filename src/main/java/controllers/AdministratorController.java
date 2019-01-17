@@ -46,4 +46,13 @@ public class AdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping("/dashboard")
+	public ModelAndView dashboard() {
+		ModelAndView result;
+
+		result = new ModelAndView("administrator/dashboard");
+
+		return result;
+	}
+
 }
