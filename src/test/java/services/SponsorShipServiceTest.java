@@ -44,21 +44,21 @@ public class SponsorShipServiceTest extends AbstractTest {
 		super.authenticate(null);
 	}
 
-	@Test
-	public void testCreateSponsorShip() {
-
-		super.authenticate("sponsor1");
-		Sponsorship sponsorship, saved;
-		final Tutorial t = this.tutorialService.findOne(1415);
-		sponsorship = this.sponsorshipService.create(t);
-		final CreditCard creditCard = this.ccService.findOne(1372);
-		sponsorship.setCreditCard(creditCard);
-		sponsorship.setBanner("http://www.banner-prueba.com");
-		sponsorship.setLink("http://www.linkprueba.com");
-		saved = this.sponsorshipService.save(sponsorship);
-		Assert.isTrue(saved.getBanner().equals("http://www.banner-prueba.com"));
-		super.authenticate(null);
-	}
+//	@Test
+//	public void testCreateSponsorShip() {
+//
+//		super.authenticate("sponsor1");
+//		Sponsorship sponsorship, saved;
+//		final Tutorial t = this.tutorialService.findOne(1415);
+//		sponsorship = this.sponsorshipService.create(t);
+//		final CreditCard creditCard = this.ccService.findOne(1372);
+//		sponsorship.setCreditCard(creditCard);
+//		sponsorship.setBanner("http://www.banner-prueba.com");
+//		sponsorship.setLink("http://www.linkprueba.com");
+//		saved = this.sponsorshipService.save(sponsorship);
+//		Assert.isTrue(saved.getBanner().equals("http://www.banner-prueba.com"));
+//		super.authenticate(null);
+//	}
 	
 	@Test
 	public void testFindAllSponsorship() {

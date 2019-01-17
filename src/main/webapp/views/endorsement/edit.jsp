@@ -24,10 +24,10 @@
 	<form:errors cssClass="error" path="comments" />
 	<br />
 	
-	<input type="submit" name="Save"
+	<input type="submit" name="save"
 		value="<spring:message code="endorsement.save"/>" />
 
-	<input type="button" name="Cancel"
+	<input type="submit" name="cancel"
 		value="<spring:message code="endorsement.cancel" />"
 		onclick="javascript: relativeRedir('endorsement/endorser/list.do');" />
 

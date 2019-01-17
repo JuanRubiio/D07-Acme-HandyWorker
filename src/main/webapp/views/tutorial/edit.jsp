@@ -9,7 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="tutorial/handyworker/edit.do" modelAttribute="tutorial" method="post">
+<form:form action="tutorial/handyworker/save.do" modelAttribute="tutorial" method="post">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -38,11 +38,13 @@
 	<form:input path="pictures"/>
 	<form:errors cssClass="error" path="pictures" />
 	<br />
+	<br />
+	
 
-	<input type="submit" name="Save"
+	<input type="submit" name="save"
 		value="<spring:message code="tutorial.save"/>" />
 
-	<input type="submit" name="Cancel"
+	<input type="button" name="cancel"
 		value="<spring:message code="tutorial.cancel" />"
 		onclick="javascript: relativeRedir('tutorial/handyworker/list.do');" />
 

@@ -17,6 +17,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <display:table name="sections" id="row" pagesize="5" requestURI="${requestUri}" class="displaytag">
 	
 	<spring:message code="section.title" var="title" />
@@ -31,28 +32,24 @@
 	<spring:message code="section.orden" var="orden" />
 	<display:column property="orden" title="${orden}" />
 
-
 	<security:authorize access="hasRole('HANDYWORKER')">
 		<display:column titleKey="section.show">
-			<input type="submit" name="show"
-				value="<spring:message code="section.show" />"
-				onclick="javascript: relativeRedir('section/handyworker/show.do?sectionId=${row.id}');" />
+			<input type="submit" name="show" value="<spring:message code="section.show" />"
+				onclick="javascript: relativeRedir('section/handyworker/show.do?sectionId=${row.id}&tutorialId=${tutorial.id}');" />
 		</display:column>
 	</security:authorize>
 	
 	<security:authorize access="hasRole('HANDYWORKER')">
-		<display:column>
-		<input type="submit" name="edit"
-				value="<spring:message code="section.edit" />"
-				onclick="javascript: relativeRedir('section/handyworker/edit.do?sectionId=${row.id}');" />
+		<display:column titleKey="section.edit">
+		<input type="submit" name="edit" value="<spring:message code="section.edit" />"
+				onclick="javascript: relativeRedir('section/handyworker/edit.do?sectionId=${row.id}&tutorialId=${tutorial.id}');" />
 		</display:column>
 	</security:authorize>
 	
 	<security:authorize access="hasRole('HANDYWORKER')">
 		<display:column titleKey="section.delete">
-			<input type="submit" name="delete"
-				value="<spring:message code="section.delete" />"
-				onclick="javascript: relativeRedir('section/handyworker/delete.do?sectionId=${row.id}');" />
+			<input type="submit" name="delete" value="<spring:message code="section.delete" />"
+				onclick="javascript: relativeRedir('section/handyworker/delete.do?sectionId=${row.id}&tutorialId=${tutorial.id}');" />
 		</display:column>
 	</security:authorize>
 	
@@ -62,7 +59,13 @@
 <br/>
 
 <security:authorize access="hasRole('HANDYWORKER')">
+	<input type="submit" name="cancel"
+		value="<spring:message code="section.cancel" />"
+		onclick="javascript: relativeRedir('tutorial/handyworker/list.do');" />
+</security:authorize>
+
+<security:authorize access="hasRole('HANDYWORKER')">
 	<input type="submit" name="create"
 		value="<spring:message code="section.create" />"
-		onclick="javascript: relativeRedir('section/handyworker/create.do');" />
+		onclick="javascript: relativeRedir('section/handyworker/create.do?tutorialId=${tutorial.id}');" />
 </security:authorize>

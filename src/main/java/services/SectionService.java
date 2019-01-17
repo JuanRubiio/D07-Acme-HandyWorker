@@ -65,7 +65,7 @@ public class SectionService {
 		return res;
 	}
 
-	public Section save(final Section section) {
+	public Section save(final Section section,Integer tutorialId) {
 		final Section res;
 		Assert.notNull(section);
 		Assert.isTrue(section.getTitle() != "");
@@ -73,7 +73,10 @@ public class SectionService {
 		Assert.notNull(section.getOrden());
 		res = this.sectionRepository.save(section);
 		Assert.notNull(res);
-
+		Tutorial t = this.tutorialService.findOne(tutorialId);
+		Collection<Section> secciones = t.getSections();
+		secciones.add(res);
+		t.setSections(secciones);
 		return res;
 	}
 
@@ -91,7 +94,16 @@ public class SectionService {
 		Assert.isTrue(listAuth.contains("HANDYWORKER"));
 		this.sectionRepository.delete(section);
 	}
+	
+	public Collection<Section> findByTutorial(Integer id) {
+		final Collection<Section> res;
+		res = this.sectionRepository.getSectionsPerTutorial(id);
+		Assert.notNull(res);
 
+		return res;
+	}
+
+	
 	private Integer numberOfSection(final Tutorial tutorial) {
 		final Integer numeroActualSeccion = tutorial.getSections().size() + 1;
 		return numeroActualSeccion;

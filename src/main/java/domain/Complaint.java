@@ -1,6 +1,7 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -22,7 +23,7 @@ public class Complaint extends DomainEntity {
 	private Date	moment;
 	private String	description;
 	private String	attachements;
-
+	private Collection<Report> reports;
 
 	@NotBlank
 	@Pattern(regexp = "\\d{6}-[A-Z]{4}")
@@ -59,6 +60,14 @@ public class Complaint extends DomainEntity {
 
 	public void setAttachements(final String attachements) {
 		this.attachements = attachements;
+	}
+
+	public Collection<Report> getReports() {
+		return reports;
+	}
+
+	public void setReports(Collection<Report> reports) {
+		this.reports = reports;
 	}
 
 }

@@ -35,12 +35,19 @@ public class PhaseController extends AbstractController {
 	@Autowired
 	private FixUpTaskService	fixUpTaskService;
 
+//	@Autowired
+//	private FixUpTaskService	fixUpTaskService;
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView res;
 		Collection<Phase> phases;
 
+		//Si falla probar:
+		//Actor logueado = this.actorService.getPrincipal();
+		//phases = phaseService.findByHandyWorker(logueado.getId());
+		
+		//borrar phases
 		phases = this.phaseService.findAll();
 
 		res = new ModelAndView("phase/list");
@@ -57,10 +64,15 @@ public class PhaseController extends AbstractController {
 		Application application;
 		FixUpTask fixUpTask;
 
+		//Si falla, probar:
+		//Actor logueado = this.actorService.getPrincipal();
+		//HandyWorker hw = (HandyWorker) logueado;
+		
 		fixUpTask = this.fixUpTaskService.create();
 		application = this.applicationService.create(fixUpTask);
+		//application.setHandyWorker(hw);
 		phases = this.phaseService.create(application);
-
+		
 		res = this.createEditModelAndView(phases);
 
 		return res;
@@ -77,7 +89,18 @@ public class PhaseController extends AbstractController {
 
 		return res;
 	}
+	
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int phaseId) {
+			ModelAndView result;
+			Phase p;
+			p = this.phaseService.findOne(phaseId);
+			result = new ModelAndView("phase/show");
+			result.addObject("phase", p);
 
+			return result;
+		}
+	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Phase phase, final BindingResult binding) {
 		ModelAndView res;
@@ -108,6 +131,21 @@ public class PhaseController extends AbstractController {
 
 		return res;
 	}
+	
+	//Si el metodo delete esta mal, probar:
+	
+//	@RequestMapping(value="/delete",method = RequestMethod.GET)
+//	public ModelAndView delete(@RequestParam final int phaseId){
+//		
+//		ModelAndView res;
+//		Phase phase;
+//		phase = this.phaseService.findOne(phaseId);
+//		Assert.notNull(phase);
+//		phaseService.delete(phase);
+//		//REDIRIGE AL CONTROLLER DE LIST Y CARGA LA VISTA LIST.JSP
+//		res = new ModelAndView("redirect:list.do");
+//		return res;
+//	}
 
 	protected ModelAndView createEditModelAndView(final Phase phase) {
 		ModelAndView res;

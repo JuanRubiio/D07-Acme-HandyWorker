@@ -9,7 +9,8 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="section/handyworker/edit.do" modelAttribute="section" method="post">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+<form:form action="${action}" modelAttribute="section" method="post">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -36,12 +37,12 @@
 	<form:errors cssClass="error" path="pictures" />
 	<br />
 
-	<input type="submit" name="Save"
+	<input type="submit" name="save"
 		value="<spring:message code="section.save"/>" />
 
-	<input type="submit" name="Cancel"
+	<input type="button" name="cancel"
 		value="<spring:message code="section.cancel" />"
-		onclick="javascript: relativeRedir('section/handyworker/list.do');" />
+		onclick="javascript: relativeRedir('section/handyworker/list.do?tutorialId=${id}');" />
 
 
 </form:form>

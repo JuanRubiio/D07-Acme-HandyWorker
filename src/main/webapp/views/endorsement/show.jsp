@@ -25,6 +25,6 @@
 	<security:authorize access="hasAnyRole('HANDYWORKER','CUSTOMER')">
 				<button type="button"
 					onclick="javascript: relativeRedir('endorsement/endorser/list.do')">
-					<spring:message code="endorsement.return" />
+					<spring:message code="endorsement.cancel" />
 				</button>
 			</security:authorize>

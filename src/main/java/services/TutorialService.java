@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.SponsorshipRepository;
 import repositories.TutorialRepository;
 import security.Authority;
 import domain.Actor;
 import domain.HandyWorker;
+import domain.Sponsorship;
 import domain.Tutorial;
 
 @Service
@@ -26,23 +28,22 @@ public class TutorialService {
 	private TutorialRepository	tutorialRepository;
 	@Autowired
 	private ActorService		actorService;
+	@Autowired
+	private SponsorshipRepository sponsorshipRepository;
 
 
 	//Supporting services
-	public Tutorial create(final HandyWorker handyWorker) {
-		Assert.notNull(handyWorker);
+	public Tutorial create() {
 		final Tutorial res = new Tutorial();
-
-		final Actor actor = this.actorService.getPrincipal();
-		final Collection<Authority> autorities = actor.getUserAccount().getAuthorities();
-		final ArrayList<String> listAuth = new ArrayList<String>();
-
-		if (!autorities.isEmpty())
-			for (final Authority au : autorities)
-				listAuth.add(au.getAuthority());
-
-		Assert.isTrue(listAuth.contains("HANDYWORKER"));
-		res.setHandyWorker(handyWorker);
+//		final Actor actor = this.actorService.getPrincipal();
+//		final Collection<Authority> autorities = actor.getUserAccount().getAuthorities();
+//		final ArrayList<String> listAuth = new ArrayList<String>();
+//
+//		if (!autorities.isEmpty())
+//			for (final Authority au : autorities)
+//				listAuth.add(au.getAuthority());
+//
+//		Assert.isTrue(listAuth.contains("HANDYWORKER"));
 		res.setMomentCreate(new Date());
 		return res;
 	}
@@ -65,6 +66,14 @@ public class TutorialService {
 		return res;
 	}
 
+	public Collection<Tutorial> findByHandyWorker(Integer id) {
+		final Collection<Tutorial> res;
+		res = this.tutorialRepository.getTutorialsPerHandyWorker(id);
+		Assert.notNull(res);
+
+		return res;
+	}
+	
 	public Tutorial save(final Tutorial tutorial) {
 		final Tutorial res;
 		Assert.notNull(tutorial);
@@ -76,9 +85,14 @@ public class TutorialService {
 	}
 
 	public void delete(final Tutorial tutorial) {
-		Assert.notNull(tutorial);
+	Assert.notNull(tutorial);
+	Collection<Sponsorship> sponsorships = this.sponsorshipRepository.findByTutorialId(tutorial.getId());
+	for (Sponsorship sp : sponsorships){
+		this.sponsorshipRepository.delete(sp);
+	}
 		this.tutorialRepository.delete(tutorial);
-
 	}
 
+	
+	
 }

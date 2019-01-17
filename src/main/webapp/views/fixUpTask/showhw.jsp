@@ -9,7 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="fixUpTask/customer,handyWorker/show.do" modelAttribute="fixUpTask"
+<form:form action="fixUpTask/handyWorker/showhw.do" modelAttribute="fixUpTask"
 	method="post">
 
 	<form:hidden path="id" />
@@ -28,13 +28,14 @@
 		<spring:message code="fixUpTask.description" />: ${fixUpTask.description}
 	</form:label>
 
+	<a href="application/handyWorker/create.do">Send application</a>
 
 	<form:label path="address">
 		<spring:message code="fixUpTask.address" />: ${fixUpTask.address}
 	</form:label>
 	
 	<form:label path="minPrice">
-		<spring:message code="fixUpTask.minPrice" />: ${fixUpTask.minPrice}
+		<spring:message code="fixUpTask.minPrice" />:  ${fixUpTask.minPrice}
 	</form:label>
 	
 	<form:label path="maxPrice">
@@ -52,7 +53,7 @@
 
 	<input type="button" name="cancel"
 		value="<spring:message code="fixUpTask.cancel" />"
-		onclick="javascript: relativeRedir('fixUpTask/customer/listcustomer.do');" />
+		onclick="javascript: relativeRedir('fixUpTask/handyWorker/listhw.do');" />
 
 
 </form:form>

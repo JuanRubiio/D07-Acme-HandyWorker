@@ -20,56 +20,35 @@
 
 <p>
 
+	<fieldset>
+	<b><spring:message code="tutorial.title"></spring:message>:</b> <jstl:out value="${tutorial.title}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.momentUpdate"></spring:message>:</b> <jstl:out value="${tutorial.momentUpdate}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.momentCreate"></spring:message>:</b> <jstl:out value="${tutorial.momentCreate}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.summary"></spring:message>:</b> <jstl:out value="${tutorial.summary}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.pictures"></spring:message>:</b> <jstl:out value="${tutorial.pictures}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.handyWorker"></spring:message>:</b> <jstl:out value="${tutorial.handyWorker.name}"></jstl:out>
+	<br />
+	
+	<b><spring:message code="tutorial.sections"></spring:message>:</b> <input type="submit" name="listsections" value="<spring:message code="tutorial.listsections"/>" 
+	onclick="javascript:relativeRedir('section/handyworker/list.do?tutorialId=${tutorial.id}')" />			
+	<br />
+				
+	</fieldset>
 
-	<spring:message code="tutorial.title"></spring:message> <jstl:out value="${tutorial.title}"></jstl:out>
-	<br />
-	
-	<spring:message code="tutorial.momentUpdate"></spring:message> <jstl:out value="${tutorial.momentUpdate}"></jstl:out>
-	<br />
-	
-	<spring:message code="tutorial.momentCreate"></spring:message> <jstl:out value="${tutorial.momentCreate}"></jstl:out>
-	<br />
-	
-	<spring:message code="tutorial.summary"></spring:message> <jstl:out value="${tutorial.summary}"></jstl:out>
-	<br />
-	
-	<spring:message code="tutorial.pictures"></spring:message> <jstl:out value="${tutorial.pictures}"></jstl:out>
-	<br />
-	
-	<spring:message code="tutorial.handyWorker"></spring:message> <jstl:out value="${tutorial.handyWorker.name}"></jstl:out>
-	<br />
-
-		<fieldset>
-			<legend>
-				<b><spring:message code="tutorial.sections"></spring:message></b>
-			</legend>
-			<display:table name="sections" id="section"
-				pagesize="5" class="displaytag">
-
-				<spring:message code="curriculum.section.title" var="title"></spring:message>
-				<display:column property="title" title="${title}"
-					sortable="true" />
-					
-				<spring:message code="curriculum.section.orden" var="orden"></spring:message>
-				<display:column property="orden" title="${orden}"
-					sortable="true" />
-
-			</display:table>
+		<br />
 			
-			<spring:message code="tutorial.listsections" var="listsections"></spring:message>
-			<input type="button" name="listsections" value="${listsections}"
-				onclick="javascript:relativeRedir('section/handyWorker/list.do')" />
-			
-			
-			
-		</fieldset>
-		
-
-<!-- Cancel -->
 
 	<security:authorize access="hasRole('HANDYWORKER')">	
-				<button type="button"
-					onclick="javascript: relativeRedir('tutorial/handyworker/list.do')">
-					<spring:message code="tutorial.return" />
-				</button>
+		<input type="submit" name="cancel" value="<spring:message code="tutorial.cancel" />"
+		onclick="javascript: relativeRedir('tutorial/handyworker/list.do');" />
 			</security:authorize>

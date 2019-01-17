@@ -29,7 +29,7 @@ public class SponsorshipService {
 	private SponsorService			sponsorService;
 
 
-	public Sponsorship create(final Tutorial t) {
+	public Sponsorship create() {
 		Sponsorship result;
 		final Actor a = this.actorService.getPrincipal();
 		final Collection<Authority> authorities = a.getUserAccount().getAuthorities();
@@ -39,11 +39,9 @@ public class SponsorshipService {
 				listAuth.add(au.getAuthority());
 		Assert.isTrue(listAuth.contains("SPONSOR"));
 		result = new Sponsorship();
-		final Sponsor s = this.sponsorService.getPrincipal();
-		result.setSponsor(s);
-		result.setTutorial(t);
 		return result;
 	}
+	
 	public Collection<Sponsorship> findByTutorialId(final Integer tutorialID) {
 
 		Assert.notNull(tutorialID);
@@ -89,6 +87,13 @@ public class SponsorshipService {
 		result = this.sponsorshipRepository.save(sponsorship);
 
 		return result;
+
+	}
+	
+	public Collection<Sponsorship> findBySponsorId(final Integer sponsorID) {
+
+		Assert.notNull(sponsorID);
+		return this.sponsorshipRepository.findBySponsorId(sponsorID);
 
 	}
 	

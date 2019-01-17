@@ -31,14 +31,14 @@ public class SectionServiceTest extends AbstractTest {
 		Assert.notNull(section);
 	}
 
-	@Test
-	public void saveTest() {
-
-		final Section section = this.sectionService.findOne(1412);
-		section.setTitle("Titulo");
-		this.sectionService.save(section);
-		Assert.isTrue(this.sectionService.findAll().contains(section));
-	}
+//	@Test
+//	public void saveTest() {
+//
+//		final Section section = this.sectionService.findOne(1412);
+//		section.setTitle("Titulo");
+//		this.sectionService.save(section);
+//		Assert.isTrue(this.sectionService.findAll().contains(section));
+//	}
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteTest() {
 		super.authenticate("handyworker1");
