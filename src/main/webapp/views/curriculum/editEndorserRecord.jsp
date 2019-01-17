@@ -30,7 +30,7 @@
 	
 	<security:authorize access="hasRole('HANDYWORKER')">
 	
-	<form:label path="Name">
+	<form:label path="name">
 		<spring:message code="curriculum.endorserRecord.Name" />
 	</form:label>
 	
