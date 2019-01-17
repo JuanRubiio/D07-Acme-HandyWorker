@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
@@ -17,7 +18,7 @@ import domain.Application;
 import domain.FixUpTask;
 
 @Controller
-@RequestMapping("/application/handyWorker")
+@RequestMapping("/application/handyworker")
 public class ApplicationController3 extends AbstractController {
 
 	@Autowired
@@ -25,7 +26,9 @@ public class ApplicationController3 extends AbstractController {
 
 	@Autowired
 	private FixUpTaskService	fixUpTaskService;
-
+	
+	//Autowired
+	//provate ActorService actorService;
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -33,9 +36,15 @@ public class ApplicationController3 extends AbstractController {
 		Application application;
 		FixUpTask fixUpTask;
 
+		//Si falla, probar:
+		//Actor logueado = this.actorService.getPrincipal();
+		//HandyWorker hw = (HandyWorker) logueado;
+		
 		fixUpTask = this.fixUpTaskService.create();
 		application = this.applicationService.create(fixUpTask);
 
+		//application.setHandyWorker(hw);
+		
 		res = this.createEditModelAndView(application);
 
 		return res;
@@ -58,6 +67,19 @@ public class ApplicationController3 extends AbstractController {
 		return res;
 	}
 
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int applicationId) {
+			ModelAndView result;
+			Application a;
+			a = this.applicationService.findOne(applicationId);
+			result = new ModelAndView("application/show");
+			result.addObject("application", a);
+
+			return result;
+		}
+	
+	
+	
 	protected ModelAndView createEditModelAndView(final Application application) {
 		ModelAndView res;
 

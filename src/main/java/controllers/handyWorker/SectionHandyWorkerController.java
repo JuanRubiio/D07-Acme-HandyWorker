@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.SectionService;
+import services.TutorialService;
 
 
 import controllers.AbstractController;
 
 import domain.Section;
+import domain.Tutorial;
+
 
 
 @Controller
@@ -27,19 +30,22 @@ public class SectionHandyWorkerController extends AbstractController{
 
 	@Autowired
 	private SectionService SectionService;
-	
-	
+	@Autowired
+	private TutorialService tutorialService;	
 	
 	@RequestMapping(value="/list",method = RequestMethod.GET)
-	public ModelAndView list(){
+	public ModelAndView list(@RequestParam Integer tutorialId){
 		
 		ModelAndView res;
 		Collection<Section> Sectiones;
 		
-		Sectiones = SectionService.findAll();
+		Sectiones = SectionService.findByTutorial(tutorialId);
+		Tutorial tuto = tutorialService.findOne(tutorialId);
+	
 		
 		res = new ModelAndView("section/list");
-		res.addObject("Sectiones",Sectiones);
+		res.addObject("sections",Sectiones);
+		res.addObject("tutorial",tuto);
 		res.addObject("requestURI","section/handyworker/list.do");
 		
 		return res;
@@ -49,36 +55,66 @@ public class SectionHandyWorkerController extends AbstractController{
 	public ModelAndView create(@RequestParam Integer tutorialId){
 		ModelAndView res;
 		Section Section;
-		
+	
+		Tutorial t = this.tutorialService.findOne(tutorialId);
 		Section = this.SectionService.create(tutorialId);
+		Collection<Section> secciones = t.getSections();
+		secciones.add(Section);
 		
 		res = this.createEditModelAndView(Section);
-		
+		res.addObject("action","section/handyworker/save.do?tutorialId=" + tutorialId);
 		return res;
 	}
 
 	@RequestMapping(value="/edit",method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int SectionId){
+	public ModelAndView edit(@RequestParam int sectionId,@RequestParam int tutorialId){
 		ModelAndView res;
 		Section Section;
 		
-		Section = this.SectionService.findOne(SectionId);
+		Section = this.SectionService.findOne(sectionId);
 		Assert.notNull(Section);
 		res = createEditModelAndView(Section);
+		res.addObject("action","section/handyworker/save.do?tutorialId=" + tutorialId);
+		res.addObject("id", tutorialId);
 		
 		return res;
 	}
+	
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int sectionId,@RequestParam int tutorialId) {
+			ModelAndView result;
+			Section s;
+			s = this.SectionService.findOne(sectionId);
+			result = new ModelAndView("section/show");
+			result.addObject("section", s);
+			result.addObject("id", tutorialId);
 
-	@RequestMapping(value="/edit",method = RequestMethod.POST, params="save")
-	public ModelAndView save(@Valid Section Section, BindingResult binding){
+			return result;
+		}
+	
+	@RequestMapping(value="/delete",method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int sectionId, @RequestParam int tutorialId){
+		
+		ModelAndView res;
+		Section section;
+	    section = this.SectionService.findOne(sectionId);
+		Assert.notNull(section);
+		SectionService.delete(section);
+		res = new ModelAndView("redirect:list.do?tutorialId="+tutorialId);
+		return res;
+	}
+
+	@RequestMapping(value="/save",method = RequestMethod.POST, params="save")
+	public ModelAndView save(@Valid Section Section, BindingResult binding, @RequestParam int tutorialId){
 		ModelAndView res;
 		
 		if(binding.hasErrors()){
+			System.out.println(binding.getAllErrors());
 			res = createEditModelAndView(Section);
 		}else{
 			try{
-				SectionService.save(Section);
-				res = new ModelAndView("redict:list.do");
+				SectionService.save(Section,tutorialId);
+				res = new ModelAndView("redirect:list.do?tutorialId="+tutorialId);
 			}catch(Throwable oops){
 				res = createEditModelAndView(Section, "Section.commit.error");
 								  }
@@ -86,20 +122,7 @@ public class SectionHandyWorkerController extends AbstractController{
 		
 		return res;
 	}
-	
-	@RequestMapping(value="/edit",method = RequestMethod.POST, params="delete")
-	public ModelAndView delete(Section Section, BindingResult binding){
-		ModelAndView res;
-		
-		try{
-			SectionService.delete(Section);
-			res = new ModelAndView("redict:list.do");
-		} catch(Throwable oops){
-			res = createEditModelAndView(Section, "Section.commit.error");
-		}
-		
-		return res;
-	}
+
 	
 	protected ModelAndView createEditModelAndView(Section Section){
 		ModelAndView res;
@@ -112,10 +135,8 @@ public class SectionHandyWorkerController extends AbstractController{
 	protected ModelAndView createEditModelAndView(Section Section, String messageCode){
 		ModelAndView res;
 		
-		
-		
-		res = new ModelAndView("Section/edit");
-		res.addObject("Section",Section);
+		res = new ModelAndView("section/edit");
+		res.addObject("section",Section);
 		res.addObject("message",messageCode);		
 		
 		return res;

@@ -26,7 +26,7 @@
 	<display:column property="banner" title="${banner}"  />
 	
 	<spring:message code="sponsorship.creditCard" var="creditCard" />
-	<display:column property="creditCard" title="${creditCard}" />
+	<display:column property="creditCard.number" title="${creditCard}" />
 
 
 	<security:authorize access="hasRole('SPONSOR')">
@@ -38,7 +38,7 @@
 	</security:authorize>
 	
 	<security:authorize access="hasRole('SPONSOR')">
-		<display:column>
+		<display:column titleKey="sponsorship.edit">
 		<input type="submit" name="edit"
 				value="<spring:message code="sponsorship.edit" />"
 				onclick="javascript: relativeRedir('sponsorship/sponsor/edit.do?sponsorshipId=${row.id}');" />

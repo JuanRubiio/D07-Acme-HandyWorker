@@ -19,26 +19,31 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-	<spring:message code="sponsorship.link"></spring:message> <jstl:out value="${sponsorship.link}"></jstl:out>
+	<fieldset>
+
+	<b><spring:message code="sponsorship.link"></spring:message>:</b><jstl:out value="${sponsorship.link}"></jstl:out>
 	<br />
 	
-	<spring:message code="sponsorship.banner"></spring:message> <jstl:out value="${sponsorship.banner}"></jstl:out>
+	<b><spring:message code="sponsorship.banner"></spring:message>:</b><jstl:out value="${sponsorship.banner}"></jstl:out>
 	<br />
 	
-	<spring:message code="sponsorship.creditCard"></spring:message> <jstl:out value="${sponsorship.creditCard}"></jstl:out>
+	<b><spring:message code="sponsorship.creditCard"></spring:message>:</b><jstl:out value="${sponsorship.creditCard.number}"></jstl:out>
 	<br />
 	
-	<spring:message code="sponsorship.tutorial"></spring:message> <jstl:out value="${sponsorship.tutorial}"></jstl:out>
+	<b><spring:message code="sponsorship.tutorial"></spring:message>:</b><jstl:out value="${sponsorship.tutorial.title}"></jstl:out>
 	<br />
 	
-	<spring:message code="sponsorship.sponsor"></spring:message> <jstl:out value="${sponsorship.sponsor}"></jstl:out>
+	<b><spring:message code="sponsorship.sponsor"></spring:message>:</b><jstl:out value="${sponsorship.sponsor.name}"></jstl:out>
 	<br />
 		
+	</fieldset>
 
+	<br />
+	
 <!-- Cancel -->
 
-	<security:authorize access="hasRole('sponsor')">	
+<security:authorize access="hasRole('SPONSOR')">	
 				<button type="button" onclick="javascript: relativeRedir('sponsorship/sponsor/list.do')">
-				<spring:message code="sponsorship.return" />
+				<spring:message code="sponsorship.cancel" />
 				</button>
-			</security:authorize>
+		</security:authorize>

@@ -19,14 +19,15 @@ import services.EndorsementService;
 
 import controllers.AbstractController;
 import domain.Actor;
-import domain.HandyWorker;
+import domain.Customer;
+
 
 import domain.Endorsement;
 
 
 @Controller
-@RequestMapping("/endorsement/customer")
-public class EndorsementCustomerController extends AbstractController{
+@RequestMapping("/endorsement/handyworker")
+public class EndorsementHandyWorkerController extends AbstractController{
 
 	@Autowired
 	private EndorsementService EndorsementService;
@@ -43,7 +44,7 @@ public class EndorsementCustomerController extends AbstractController{
 		Actor logueado = this.actorService.getPrincipal();
 		Endorsements = EndorsementService.findByWriteToComments(logueado.getId());
 		
-		res = new ModelAndView("Endorsement/list");
+		res = new ModelAndView("endorsement/list");
 		res.addObject("endorsements",Endorsements);
 		res.addObject("requestURI","endorsement/handyworker/list.do");
 		
@@ -51,11 +52,11 @@ public class EndorsementCustomerController extends AbstractController{
 	}
 	
 	@RequestMapping(value="/create",method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam HandyWorker handyWorker){
+	public ModelAndView create(@RequestParam Customer customer){
 		ModelAndView res;
 		Endorsement Endorsement;
 		
-		Endorsement = this.EndorsementService.create(handyWorker);
+		Endorsement = this.EndorsementService.create(customer);
 		
 		res = this.createEditModelAndView(Endorsement);
 		
@@ -111,7 +112,7 @@ public class EndorsementCustomerController extends AbstractController{
 				EndorsementService.save(Endorsement);
 				res = new ModelAndView("redirect:list.do");
 			}catch(Throwable oops){
-				res = createEditModelAndView(Endorsement, "Endorsement.commit.error");
+				res = createEditModelAndView(Endorsement, "endorsement.commit.error");
 								  }
 		     }
 		
@@ -131,8 +132,8 @@ public class EndorsementCustomerController extends AbstractController{
 		ModelAndView res;
 		
 		
-		res = new ModelAndView("Endorsement/edit");
-		res.addObject("Endorsement",Endorsement);
+		res = new ModelAndView("endorsement/edit");
+		res.addObject("endorsement",Endorsement);
 		res.addObject("message",messageCode);		
 		
 		return res;

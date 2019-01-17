@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import services.ActorService;
 import services.SectionService;
 import services.TutorialService;
 
 import controllers.AbstractController;
+import domain.Actor;
 import domain.HandyWorker;
 import domain.Section;
 import domain.Tutorial;
@@ -29,16 +32,21 @@ public class TutorialHandyWorkerController extends AbstractController{
 	private TutorialService TutorialService;
 	@Autowired
 	private SectionService sectionService;
+	@Autowired
+	private ActorService actorService;
 	
+	//HAY QUE HACER UN METODO POR CADA ENLACE O BOTON DE LA ENTIDAD EN LA APLICACION
 	
+	//VISTAS DIRECCIONABLES (SOLO LAS RENDERIZA Y LAS MUESTRA)
 	
+	//LIST
 	@RequestMapping(value="/list",method = RequestMethod.GET)
 	public ModelAndView list(){
 		
 		ModelAndView res;
 		Collection<Tutorial> tutoriales;
-		
-		tutoriales = TutorialService.findAll();
+		Actor logueado = this.actorService.getPrincipal();
+		tutoriales = TutorialService.findByHandyWorker(logueado.getId());
 		
 		res = new ModelAndView("tutorial/list");
 		res.addObject("tutorials",tutoriales);
@@ -47,61 +55,96 @@ public class TutorialHandyWorkerController extends AbstractController{
 		return res;
 	}
 	
+	
+	//CREATE
 	@RequestMapping(value="/create",method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam HandyWorker handyWorker){
+	public ModelAndView create(){
+		
 		ModelAndView res;
 		Tutorial tutorial;
-		
-		tutorial = this.TutorialService.create(handyWorker);
-		
+		Actor logueado = this.actorService.getPrincipal();
+		//Assert.isTrue(logueado instanceof HandyWorker);
+		HandyWorker hw = (HandyWorker) logueado;
+		tutorial = this.TutorialService.create();
+		tutorial.setHandyWorker(hw);
 		res = this.createEditModelAndView(tutorial);
 		
 		return res;
 	}
 
+	//EDIT
 	@RequestMapping(value="/edit",method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int TutorialId){
+	public ModelAndView edit(@RequestParam int tutorialId){
 		ModelAndView res;
 		Tutorial Tutorial;
 		
-		Tutorial = this.TutorialService.findOne(TutorialId);
+		Tutorial = this.TutorialService.findOne(tutorialId);
 		Assert.notNull(Tutorial);
 		res = createEditModelAndView(Tutorial);
 		
 		return res;
 	}
 
-	@RequestMapping(value="/edit",method = RequestMethod.POST, params="save")
+	//SHOW
+	
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int tutorialId) {
+			ModelAndView result;
+			Tutorial t;
+			t = this.TutorialService.findOne(tutorialId);
+			result = new ModelAndView("tutorial/show");
+			result.addObject("tutorial", t);
+
+			return result;
+		}
+	
+	//DELETE
+	
+	
+	//PARA BORRAR, ELIMINAR TAMBIEN DE TABLAS AJENAS
+	@RequestMapping(value="/delete",method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int tutorialId){
+		
+		ModelAndView res;
+		Tutorial tutorial;
+		tutorial = this.TutorialService.findOne(tutorialId);
+		Assert.notNull(tutorial);
+		TutorialService.delete(tutorial);
+		//REDIRIGE AL CONTROLLER DE LIST Y CARGA LA VISTA LIST.JSP
+		res = new ModelAndView("redirect:list.do");
+		return res;
+	}
+	
+	
+	//BOTONES POST EN VARIAS VISTAS
+	
+	
+	//SAVE (CREAR O EDITAR)
+	
+	//PARA GUARDAR EN LA BASE DE DATOS RELLENARLE TODOS LOS CAMBIOS NECESARIOS
+	
+	@RequestMapping(value="/save",method = RequestMethod.POST, params="save")
 	public ModelAndView save(@Valid Tutorial tutorial, BindingResult binding){
 		ModelAndView res;
 		
 		if(binding.hasErrors()){
+			System.out.println(binding.getAllErrors());
 			res = createEditModelAndView(tutorial);
 		}else{
 			try{
 				TutorialService.save(tutorial);
-				res = new ModelAndView("redict:list.do");
+				res = new ModelAndView("redirect:list.do");
 			}catch(Throwable oops){
+				System.out.println("catch");
 				res = createEditModelAndView(tutorial, "tutorial.commit.error");
 								  }
 		     }
 		
 		return res;
-	}
+	}	
 	
-	@RequestMapping(value="/list",method = RequestMethod.POST, params="delete")
-	public ModelAndView delete(Tutorial Tutorial, BindingResult binding){
-		ModelAndView res;
-		
-		try{
-			TutorialService.delete(Tutorial);
-			res = new ModelAndView("redict:list.do");
-		} catch(Throwable oops){
-			res = createEditModelAndView(Tutorial, "Tutorial.commit.error");
-		}
-		
-		return res;
-	}
+	
+	//METODOS AUXILIARES
 	
 	protected ModelAndView createEditModelAndView(Tutorial Tutorial){
 		ModelAndView res;
@@ -117,9 +160,9 @@ public class TutorialHandyWorkerController extends AbstractController{
 		
 		sections = sectionService.findAll();
 		
-		
+		//CREA UNA VISTA RENDERIZADA USANDO EDIT.JSP COMO BASE
 		res = new ModelAndView("tutorial/edit");
-		res.addObject("Tutorial",tutorial);
+		res.addObject("tutorial",tutorial);
 		res.addObject("section", sections);
 		res.addObject("message",messageCode);		
 		

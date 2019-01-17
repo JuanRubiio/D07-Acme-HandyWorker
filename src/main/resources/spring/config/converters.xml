@@ -21,6 +21,9 @@
 		<bean class="converters.StringToActorConverter" />
 		<bean class="converters.ActorToStringConverter" />
 
+		<bean class="converters.StringToCustomerConverter" />
+		<bean class="converters.CustomerToStringConverter" />
+		
 		<bean class="converters.StringToSpamConverter" />
 		<bean class="converters.SpamToStringConverter" />
 

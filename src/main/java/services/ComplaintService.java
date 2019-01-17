@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ComplaintRepository;
+import repositories.ReportRepository;
 import domain.Complaint;
+import domain.Report;
+
 
 @Service
 @Transactional
@@ -26,6 +29,8 @@ public class ComplaintService {
 	private UtilitiesService	utilitiesService;
 	@Autowired
 	private ActorService		actorService;
+	@Autowired
+	private ReportRepository reportRepository;
 
 
 	//Supporting services
@@ -93,6 +98,15 @@ public class ComplaintService {
 		final Complaint complaint = this.complaintRepository.findOne(this.obtieneIdQuejaSinReferee());
 		Assert.notNull(complaint);
 		return complaint;
+	}
+	
+	public void delete(final Complaint Complaint) {
+	Assert.notNull(Complaint);
+	Collection<Report> reports = this.reportRepository.findByComplaintId(Complaint.getId());
+	for (Report r : reports){
+		this.reportRepository.delete(r);
+	}
+		this.complaintRepository.delete(Complaint);
 	}
 
 }

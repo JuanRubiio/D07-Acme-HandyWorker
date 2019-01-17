@@ -16,16 +16,27 @@
 	</definition>
 
 
-	<definition name="fixUpTask/show" extends="master.page">
+	<definition name="fixUpTask/showhw" extends="master.page">
 		<put-attribute name="title" value="Show FixUpTask" />
-		<put-attribute name="body" value="/views/fixUpTask/show.jsp" />
+		<put-attribute name="body" value="/views/fixUpTask/showhw.jsp" />
 	</definition>
-	
+	<definition name="fixUpTask/showcustomer" extends="master.page">
+		<put-attribute name="title" value="Show FixUpTask" />
+		<put-attribute name="body" value="/views/fixUpTask/showcustomer.jsp" />
+	</definition>
 
-	<definition name="fixUpTask/list" extends="master.page">
+	<definition name="fixUpTask/listhw" extends="master.page">
 		<put-attribute name="title" value="List FixUpTask" />
-		<put-attribute name="body" value="/views/fixUpTask/list.jsp" />
+		<put-attribute name="body" value="/views/fixUpTask/listhw.jsp" />
+	</definition>
+	<definition name="fixUpTask/listcustomer" extends="master.page">
+		<put-attribute name="title" value="List FixUpTask" />
+		<put-attribute name="body" value="/views/fixUpTask/listcustomer.jsp" />
 	</definition>
 	
+	<definition name="customer/handyWorker" extends="master.page">
+		<put-attribute name="title" value="Show customer with fixUpTask" />
+		<put-attribute name="body" value="/views/fixUpTask/customer.jsp" />
+	</definition>
 
 </tiles-definitions>

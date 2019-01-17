@@ -13,21 +13,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.SectionService;
+import services.ActorService;
+import services.CreditCardService;
 import services.SponsorshipService;
+import services.TutorialService;
 
 import controllers.AbstractController;
+import domain.Actor;
+import domain.CreditCard;
 import domain.Sponsor;
-import domain.Section;
 import domain.Sponsorship;
 import domain.Tutorial;
 
 @Controller
-@RequestMapping("/Sponsorship/sponsor")
+@RequestMapping("/sponsorship/sponsor")
 public class SponsorshipSponsorController extends AbstractController{
 
 	@Autowired
 	private SponsorshipService SponsorshipService;
+	@Autowired
+	private ActorService actorService;
+	@Autowired
+	private TutorialService tutorialService;	
+	@Autowired
+	private CreditCardService creditCardService;
 	
 	
 	@RequestMapping(value="/list",method = RequestMethod.GET)
@@ -36,7 +45,8 @@ public class SponsorshipSponsorController extends AbstractController{
 		ModelAndView res;
 		Collection<Sponsorship> sponsorships;
 		
-		sponsorships = SponsorshipService.findAll();
+		Actor logueado = this.actorService.getPrincipal();
+		sponsorships = SponsorshipService.findBySponsorId(logueado.getId());
 		
 		res = new ModelAndView("sponsorship/list");
 		res.addObject("sponsorships",sponsorships);
@@ -46,60 +56,82 @@ public class SponsorshipSponsorController extends AbstractController{
 	}
 	
 	@RequestMapping(value="/create",method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam Tutorial tutorial){
+	public ModelAndView create(){
 		ModelAndView res;
-		Sponsorship Sponsorship;
+		Sponsorship sponsorship;
+		Collection<Tutorial> tutoriales = this.tutorialService.findAll();
 		
-		Sponsorship = this.SponsorshipService.create(tutorial);
 		
-		res = this.createEditModelAndView(Sponsorship);
+		Actor logueado = this.actorService.getPrincipal();
+		//Assert.isTrue(logueado instanceof HandyWorker);
+		Sponsor s = (Sponsor) logueado;
+		
+		sponsorship = this.SponsorshipService.create();
+		sponsorship.setSponsor(s);
+		res = this.createEditModelAndView(sponsorship);
+		
+		res.addObject("tutorials", tutoriales);
 		
 		return res;
 	}
 
 	@RequestMapping(value="/edit",method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int SponsorshipId){
+	public ModelAndView edit(@RequestParam int sponsorshipId){
 		ModelAndView res;
 		Sponsorship Sponsorship;
 		
-		Sponsorship = this.SponsorshipService.findOne(SponsorshipId);
+		Sponsorship = this.SponsorshipService.findOne(sponsorshipId);
 		Assert.notNull(Sponsorship);
 		res = createEditModelAndView(Sponsorship);
 		
 		return res;
 	}
 
-	@RequestMapping(value="/edit",method = RequestMethod.POST, params="save")
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int sponsorshipId) {
+			ModelAndView result;
+			Sponsorship sp;
+			sp = this.SponsorshipService.findOne(sponsorshipId);
+			result = new ModelAndView("sponsorship/show");
+			result.addObject("sponsorship", sp);
+
+			return result;
+		}
+	
+	@RequestMapping(value="/delete",method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int sponsorshipId){
+		
+		ModelAndView res;
+		Sponsorship sp;
+		sp = this.SponsorshipService.findOne(sponsorshipId);
+		Assert.notNull(sp);
+		SponsorshipService.delete(sp);
+		res = new ModelAndView("redirect:list.do");
+		return res;
+	}
+	
+	@RequestMapping(value="/save",method = RequestMethod.POST, params="save")
 	public ModelAndView save(@Valid Sponsorship Sponsorship, BindingResult binding){
 		ModelAndView res;
+		Collection<Tutorial> t = this.tutorialService.findAll();
 		
 		if(binding.hasErrors()){
+			System.out.println(binding.getAllErrors());
 			res = createEditModelAndView(Sponsorship);
+			res.addObject("tutorials",t);
 		}else{
 			try{
 				SponsorshipService.save(Sponsorship);
-				res = new ModelAndView("redict:list.do");
+				res = new ModelAndView("redirect:list.do");
 			}catch(Throwable oops){
 				res = createEditModelAndView(Sponsorship, "Sponsorship.commit.error");
+				res.addObject("tutorials",t);
 								  }
 		     }
 		
 		return res;
 	}
 	
-//	@RequestMapping(value="/edit",method = RequestMethod.POST, params="delete")
-//	public ModelAndView delete(Sponsorship Sponsorship, BindingResult binding){
-//		ModelAndView res;
-//		
-//		try{
-//			SponsorshipService.delete(Sponsorship);
-//			res = new ModelAndView("redict:list.do");
-//		} catch(Throwable oops){
-//			res = createEditModelAndView(Sponsorship, "Sponsorship.commit.error");
-//		}
-//		
-//		return res;
-//	}
 	
 	protected ModelAndView createEditModelAndView(Sponsorship Sponsorship){
 		ModelAndView res;
@@ -111,10 +143,12 @@ public class SponsorshipSponsorController extends AbstractController{
 	
 	protected ModelAndView createEditModelAndView(Sponsorship Sponsorship, String messageCode){
 		ModelAndView res;
-
 		
-		res = new ModelAndView("Sponsorship/edit");
-		res.addObject("Sponsorship",Sponsorship);
+		Collection<CreditCard> cc = this.creditCardService.findAll();
+		
+		res = new ModelAndView("sponsorship/edit");
+		res.addObject("sponsorship",Sponsorship);
+		res.addObject("card", cc);
 		res.addObject("message",messageCode);		
 		
 		return res;
