@@ -29,7 +29,7 @@
 	<security:authorize access="hasRole('HANDYWORKER')">
 	
 	<form:label path="title">
-		<spring:message code="curricula.educationRecord.title" />
+		<spring:message code="curriculum.educationRecord.title" />
 	</form:label>
 	
 	<form:input path="title" />
@@ -38,7 +38,7 @@
 	
 	<!--  -->
 	<form:label path="begin">
-		<spring:message code="curricula.educationRecord.begin" />
+		<spring:message code="curriculum.educationRecord.begin" />
 	</form:label>
 	
 	<form:input path="begin" />
@@ -47,7 +47,7 @@
 	
 	<!--  -->
 	<form:label path="end">
-		<spring:message code="curricula.educationRecord.end" />
+		<spring:message code="curriculum.educationRecord.end" />
 	</form:label>
 	
 	<form:input path="end" />

@@ -78,6 +78,7 @@
 			<li><a href="application/handyworker/list.do"><spring:message code="master.page.handyworker.application" /></a></li>
 			<li><a href="tutorial/handyworker/list.do"><spring:message code="master.page.handyworker.tutorial.list" /></a></li>
 			<li><a href="endorsement/handyworker/list.do"><spring:message code="master.page.handyworker.endorsement" /></a></li>
+			<li><a href="curriculum/handyworker/create.do"><spring:message code="master.page.handyworker.curriculum" /></a></li>
 
 
 

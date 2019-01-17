@@ -1,93 +1,92 @@
-<%--
- * list.jsp
- *
- * Copyright (C) 2017 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- --%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action= "${saveURL}" modelAttribute="curriculum">
+<!-- 
+	Recieves: 
+	
+	Curricula curricula, si tiene una / null si no la tiene (se le ofrece la posibilidad de crearla).
+	
+-->
 
-<form:hidden path="id"/>
-<form:hidden path="version"/>
-<form:hidden path="handyWorker"/>
-<form:hidden path="educationalRecord"/>
-<form:hidden path="professionalRecords"/>
-<form:hidden path="endoserRecords"/>
-<form:hidden path="miscellaneousRecords"/>
-<form:hidden path="ticker"/>
-<form:hidden path="personalRecord.curriculum"/>
-<form:hidden path="personalRecord.id"/>
-<form:hidden path="personalRecord.version"/>
-<form:hidden path="educationalRecord.curriculum"/>
-<form:hidden path="educationalRecord.id"/>
-<form:hidden path="educationalRecord.version"/>
-<form:hidden path="endorserRecord.curriculum"/>
-<form:hidden path="endorserRecord.id"/>
-<form:hidden path="endorserRecord.version"/>
-<form:hidden path="miscellaneousRecord.curriculum"/>
-<form:hidden path="miscellaneousRecord.id"/>
-<form:hidden path="miscellaneousRecord.version"/>
-<form:hidden path="professionalRecord.curriculum"/>
-<form:hidden path="professionalRecord.id"/>
-<form:hidden path="professionalRecord.version"/>
-
-
-<acme:textbox path="personalRecord.name" code="curriculum.name"/>
-<acme:textbox path="personalRecord.photo" code="curriculum.photo"/>
-<acme:textbox path="personalRecord.email" code="curriculum.email"/>
-<acme:textbox path="personalRecord.linkedinIdProfile" code="curriculum.linkedinIdProfile"/>
-<acme:textbox path="personalRecord.phoneNumber" code="curriculum.phoneNumber"/>
-
-<acme:textbox path="educationalRecord.title" code="curriculum.title"/>
-<acme:textbox path="educationalRecord.institution" code="curriculum.institution"/>
-<acme:textbox path="educationalRecord.attachment" code="curriculum.attachment"/>
-<acme:textbox path="educationalRecord.comments" code="curriculum.comments"/>
-<acme:textbox path="educationalRecord.begin" code="curriculum.begin"/>
-<acme:textbox path="educationalRecord.end" code="curriculum.end"/>
-
-<acme:textbox path="professionalRecord.companyName" code="curriculum.companyName"/>
-<acme:textbox path="professionalRecord.role" code="curriculum.role"/>
-<acme:textbox path="professionalRecord.attachment" code="curriculum.attachment"/>
-<acme:textbox path="professionalRecord.comments" code="curriculum.comments"/>
-<acme:textbox path="professionalRecord.begin" code="curriculum.begin"/>
-<acme:textbox path="professionalRecord.end" code="curriculum.end"/>
-
-
-<acme:textbox path="endorserRecord.name" code="curriculum.name"/>
-<acme:textbox path="endorserRecord.email" code="curriculum.email"/>
-<acme:textbox path="endorserRecord.phone" code="curriculum.phone"/>
-<acme:textbox path="endorserRecord.attachment" code="curriculum.attachment"/>
-<acme:textbox path="endorserRecord.comments" code="curriculum.comments"/>
-
-<acme:textbox path="miscellaneousRecord.title" code="curriculum.title"/>
-<acme:textbox path="miscellaneous.attachment" code="curriculum.attachment"/>
-<acme:textbox path="miscellaneous.comments" code="curriculum.comments"/>
-
-<tr>
-			<td colspan="3">
-				<acme:submit code="curriculum.save" name="save"/>
-				<acme:cancel code="curriculum.cancel" url="curriculum/handyWorker/list.do" />
-			</td>
-		</tr>
-		<input type="submit" name="save"
-		value="<spring:message code="curriculum.save"/>" />
-
-
-</form:form>
-
-
-
-
+<security:authorize access="hasRole('HANDYWORKER')">
+	<jstl:if test="${curricula == null}">
+		<spring:message code="curriculum.notCreated"/>
+		<h4><a href="curriculum/handyworker/createPersonalRecord.do"><spring:message code="curriculum.create" /></a></h4>
+	</jstl:if>
+	<jstl:if test="${curricula != null}">
+		<h2>Ticker:${curricula.ticker}</h2>
+		<h4><a href="curriculum/handyworker/deleteCurriculum.do?curriculaId=${curricula.id}"><spring:message code="curriculum.deleteCurriculum"/></a></h4>
+		<h3><spring:message code="curriculum.personalRecord"/></h3>
+		<h4><a href="curriculum/handyworker/editPersonalRecord.do?personalRecordId=${curriculum.personalRecord.id}"><spring:message code="curriculum.editPersonalRecord"/></a></h4>
+		<spring:message code="curriculum.fullName"/>: <jstl:out value="${curriculum.personalRecord.fullName }"/><br>
+		<spring:message code="curriculum.photo"/>: <jstl:out value="${curriculum.personalRecord.photo }"/><br>
+		<spring:message code="curriculum.email"/>: <jstl:out value="${curriculum.personalRecord.email }"/><br>
+		<spring:message code="curriculum.phone"/>: <jstl:out value="${curriculum.personalRecord.phone }"/><br>
+		<spring:message code="curriculum.linkedInProfile"/>: <jstl:out value="${curriculum.personalRecord.linkedInUrl}"/><br>
+		<hr>
+		
+		<h3><spring:message code="curriculum.endorserRecords"/></h3>
+		<h4><a href="curriculum/handyworker/createEndorserRecord.do"><spring:message code="curriculum.createEndorserRecord"/></a></h4><hr>
+		<jstl:forEach var="i" items="${curricula.endorserRecords }">
+		<h4><a href="curriculum/handyworker/editEndorserRecord.do?endorserRecordId=${i.id}"><spring:message code="curriculum.editEndorserRecord"/></a></h4>
+		<h4><a href="curriculum/handyworker/deleteEndorserRecord.do?endorserRecordId=${i.id}"><spring:message code="curriculum.deleteEndorserRecord"/></a></h4>
+		<spring:message code="curriculum.endorserName"/>: <jstl:out value="${i.endorserName }"/><br>
+		<spring:message code="curriculum.email"/>: <jstl:out value="${i.email }"/><br>
+		<spring:message code="curriculum.phone"/>: <jstl:out value="${i.phone }"/><br>
+		<spring:message code="curriculum.linkedInProfile"/>: <jstl:out value="${i.linkedInProfile }"/><br>
+		<spring:message code="curriculum.comments"/>: <jstl:out value="${i.comments }"/><br>
+		<hr>
+		</jstl:forEach>
+		
+		
+		<h3><spring:message code="curriculum.educationRecords"/></h3>
+		<h4><a href="curriculum/handyworker/createEducationRecord.do"><spring:message code="curricula.createEducationRecord"/></a></h4><hr>
+		<jstl:forEach var="i" items="${curricula.educationRecords }">
+		<h4><a href="curriculum/handyworker/editEducationRecord.do?educationRecordId=${i.id}"><spring:message code="curriculum.editEducationRecord"/></a></h4>
+		<h4><a href="curriculum/handyworker/deleteEducationRecord.do?educationRecordId=${i.id}"><spring:message code="curriculum.deleteEducationRecord"/></a></h4>
+		<spring:message code="curriculum.diplomaTitle"/>: <jstl:out value="${i.diplomaTitle }"/><br>
+		<spring:message code="curriculum.startDate"/>: <jstl:out value="${i.startDate }"/><br>
+		<spring:message code="curriculum.endDate"/>: <jstl:out value="${i.endDate }"/><br>
+		<spring:message code="curriculum.institution"/>: <jstl:out value="${i.institution }"/><br>
+		<spring:message code="curriculum.attachment"/>: <jstl:out value="${i.attachment }"/><br>
+		<spring:message code="curriculum.comments"/>: <jstl:out value="${i.comments }"/><br>
+		<hr>
+		</jstl:forEach>
+		
+		<h3><spring:message code="curriculum.professionalRecords"/></h3>
+		<h4><a href="curriculum/handyworker/createProfessionalRecord.do"><spring:message code="curriculum.createProfessionalRecord"/></a></h4><hr>
+		<jstl:forEach var="i" items="${curricula.professionalRecords }">
+		<h4><a href="curriculum/handyworker/editProfessionalRecord.do?professionalRecordId=${i.id}"><spring:message code="curriculum.editProfessionalRecord"/></a></h4>
+		<h4><a href="curriculum/handyworker/deleteProfessionalRecord.do?prosfessionalRecordId=${i.id}"><spring:message code="curriculum.deleteProfessionalRecord"/></a></h4>
+		<spring:message code="curriculum.companyName"/>: <jstl:out value="${i.companyName}"/><br>
+		<spring:message code="curriculum.startDate"/>: <jstl:out value="${i.startDate}"/><br>
+		<spring:message code="curriculum.endDate"/>: <jstl:out value="${i.endDate }"/><br>
+		<spring:message code="curriculum.role"/>: <jstl:out value="${i.role }"/><br>
+		<spring:message code="curriculum.attachment"/>: <jstl:out value="${i.attachment }"/><br>
+		<spring:message code="curriculum.comments"/>: <jstl:out value="${i.comments }"/><br>
+		<hr>
+		</jstl:forEach>
+		
+		<h3><spring:message code="curriculum.miscellaneousRecords"/></h3>
+		<h4><a href="curriculum/handyworker/createMiscellaneousRecord.do"><spring:message code="curriculum.createMiscellaneousRecord"/></a></h4>
+		<jstl:forEach var="i" items="${curricula.miscellaneousRecords }">
+		<h4><a href="curriculum/handyworker/editMiscellaneousRecord.do?miscellaneousRecordId=${i.id}"><spring:message code="curriculum.editMiscellaneousRecord"/></a></h4>
+		<h4><a href="curriculum/handyworker/deleteMiscellaneousRecord.do?miscellaneousRecordId=${i.id}"><spring:message code="curriculum.deleteMiscellaneousRecord"/></a></h4>
+		<spring:message code="curriculum.title"/>: <jstl:out value="${i.title }"/><br>
+		<spring:message code="curriculum.attachment"/>: <jstl:out value="${i.attachment }"/><br>
+		<spring:message code="curriculum.comments"/>: <jstl:out value="${i.comments }"/><br>
+		<hr>
+		</jstl:forEach>
+		
+	</jstl:if>
+	
+</security:authorize>

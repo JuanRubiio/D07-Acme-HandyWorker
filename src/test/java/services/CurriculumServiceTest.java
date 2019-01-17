@@ -133,6 +133,30 @@ public class CurriculumServiceTest extends AbstractTest {
 	//		final Curriculum later = this.curriculumService.findOne(aux);
 	//		Assert.isTrue(later.getPersonalRecord().equals(p1));
 	//	}
+	//	@Test
+	//	public void testHandyWorkerCreate() {
+	//		Curriculum curr;
+	//		super.authenticate("handyWorker1");
+	//		curr = this.curriculumService.create();
+	//		final Authority au = new Authority();
+	//		au.setAuthority("HANDYWORKER");
+	//
+	//		Assert.isTrue(curr.getEducationalRecords().isEmpty());
+	//		Assert.isTrue(curr.getEndorserRecords().isEmpty());
+	//		Assert.isTrue(curr.getProfessionalRecords().isEmpty());
+	//		Assert.isTrue(curr.getMiscellaneousRecords().isEmpty());
+	//		//Assert.isTrue(curr.getHandyWorker().getUserAccount().getAuthorities().contains(au) || curr.getHandyWorker().equals(null));
+	//		Assert.isNull(curr.getPersonalRecord());
+	//		Assert.notNull(curr.getTicker());
+	//
+	//		super.authenticate(null);
+	//	}
+	@Test
+	public void createCurriculumTest() {
+		Curriculum curriculum;
+		curriculum = this.curriculumService.create();
+		Assert.notNull(curriculum);
+	}
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteCurriculumTest() {
 		final Curriculum curriculum = this.curriculumService.findOne(273);
