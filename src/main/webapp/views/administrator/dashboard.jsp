@@ -11,7 +11,7 @@
 
 <h2><spring:message	code="administrator.query1" />:</h2> <jslt:out value="${query1[0]}"/> - <jslt:out value="${query1[1]}"/> - <jslt:out value="${query1[2]}"/> - <jslt:out value="${query1[3]}"/><br>
 <h2><spring:message	code="administrator.query2" />:</h2> <jslt:out value="${query2[0]}"/> - <jslt:out value="${query2[1]}"/> - <jslt:out value="${query2[2]}"/> - <jslt:out value="${query2[3]}"/><br>
-<h2><spring:message	code="administrator.query3" />:</h2> <jslt:out value="String.toString(${query3[0]})"/> - <jslt:out value="${query3[1]}"/> - <jslt:out value="${query3[2]}"/> - <jslt:out value="${query3[3]}"/><br>
+<h2><spring:message	code="administrator.query3" />:</h2> <jslt:out value="${query3[0]})"/> - <jslt:out value="${query3[1]}"/> - <jslt:out value="${query3[2]}"/> - <jslt:out value="${query3[3]}"/><br>
 <h2><spring:message	code="administrator.query4" />:</h2> <jslt:out value="${query4[0]}"/> - <jslt:out value="${query4[1]}"/> - <jslt:out value="${query4[2]}"/> - <jslt:out value="${query4[3]}"/><br>
 <h2><spring:message	code="administrator.query5" />:</h2> <jslt:out value="${query5}"/><br>
 <h2><spring:message	code="administrator.query6" />:</h2> <jslt:out value="${query6}"/><br>
