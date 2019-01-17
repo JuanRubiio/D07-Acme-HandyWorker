@@ -38,7 +38,8 @@
 
 	<br />
 	
-	<form:checkbox path="draft" />Draft
+	
+	<form:checkbox items="${warranty.draft}" path="draft"/>Draft
 	<br />
 
 	<input type="submit" name="save"
