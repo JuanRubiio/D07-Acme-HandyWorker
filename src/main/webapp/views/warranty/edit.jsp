@@ -10,49 +10,34 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-<form:form action="warranty/administrator/edit.do"
-	modelAttribute="warranty" method="post">
+<form:form action="warranty/administrator/save.do" modelAttribute="warranty" method="post">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 
 	<form:label path="title">
 		<spring:message code="warranty.title" />:
-		</form:label>
-	<jstl:if test="${warranty.version==0 }">
-		<form:input path="title" />
-	</jstl:if>
-	<jstl:if test="${warranty.version!=0 }">
-		<form:input path="title" value="${warranty.title}" />
-	</jstl:if>
+	</form:label>
+	<form:input path="title"/>
 	<form:errors cssClass="error" path="title" />
 	<br />
-
-
+	
 	<form:label path="terms">
 		<spring:message code="warranty.terms" />:
-		</form:label>
-	<jstl:if test="${warranty.version==0 }">
-		<form:input path="terms" />
-	</jstl:if>
-	<jstl:if test="${warranty.version!=0 }">
-		<form:input path="terms" value="${warranty.terms}" />
-	</jstl:if>
+	</form:label>
+	<form:input path="terms"/>
 	<form:errors cssClass="error" path="terms" />
 	<br />
 
 	<form:label path="laws">
 		<spring:message code="warranty.laws" />:
-		</form:label>
-	<jstl:if test="${warranty.version==0 }">
-		<form:input path="laws" />
-	</jstl:if>
-	<jstl:if test="${warranty.version!=0 }">
-		<form:input path="laws" value="${warranty.laws}" />
-	</jstl:if>
+	</form:label>
+	<form:input path="laws"/>
 	<form:errors cssClass="error" path="laws" />
 	<br />
 
+	<br />
+	
 	<form:checkbox path="draft" />Draft
 	<br />
 

@@ -79,8 +79,9 @@ public class WarrantyServiceTest extends AbstractTest {
 	public void testDeleteWarranty() {
 
 		super.authenticate("administrator1");
-		this.warrantyService.delete(1420);
-		this.warrantyService.findOne(1420);
+		final Warranty warranty = this.warrantyService.findOne(1420);
+		this.warrantyService.delete(warranty);
+
 		super.authenticate(null);
 	}
 
