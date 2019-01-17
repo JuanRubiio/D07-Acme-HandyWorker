@@ -26,32 +26,37 @@
 <display:table name="categories" id="row" requestURI="${requestURI}"
 	pagesize="10" class="displaytag">
 
-
-
-	<display:column titleKey="category.espName">
-
-		<a href="category/listchildren.do?categoryId=${row.id}">${row.espName}</a>
-	</display:column>
-
-	<display:column titleKey="category.engName">
-		<a href="category/listchildren.do?categoryId=${row.id}">${row.engName}</a>
+<jstl:choose>
+<jstl:when test="${language==es}">
+	<display:column titleKey="category.name">
+		<a>${row.espName}</a>
 	</display:column>
 
 	<display:column titleKey="category.father">
-		<jstl:choose>
-			<jstl:when test="${row.father.engName == 'CATEGORY'}">
-				<a href="category/list.do">${row.father.engName}</a>
-			</jstl:when>
-			<jstl:otherwise>
-				<a
-					href="category/listchildren.do?categoryId=${row.father.father.id}">${row.father.espName}</a>
-			</jstl:otherwise>
-		</jstl:choose>
+	
+				<a>${row.father.espName}</a>
+		
+			
 	</display:column>
 
+</jstl:when>
 
+<jstl:when test="${language==en}">
+	<display:column titleKey="category.name">
+		<a>${row.engName}</a>
+	</display:column>
+
+	<display:column titleKey="category.father">
+	
+	<a>${row.father.engName}</a>
+	
+	</display:column>
+
+</jstl:when>
+
+</jstl:choose>
 	<security:authorize access="hasRole('ADMIN')">
-		<display:column>
+		<display:column titleKey="category.edit">
 			<c:if test="${not empty row.father}">
 				<acme:cancel code="category.edit"
 					url="/category/administrator/edit.do?categoryId=${row.id}" />

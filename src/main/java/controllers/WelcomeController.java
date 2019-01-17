@@ -40,7 +40,7 @@ public class WelcomeController extends AbstractController {
 	public ModelAndView index(final Locale locale) {
 		final ModelAndView res = new ModelAndView("welcome/index");
 		final Configuration configuration = this.configurationService.findAll().iterator().next();
-		res.addObject("banner", configuration.getBanner());
+		//		res.addObject("banner", configuration.getBanner());
 		if (locale.getLanguage().equals("es"))
 			res.addObject("name", configuration.getWelcomMessageEs());
 		else

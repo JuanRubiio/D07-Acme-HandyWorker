@@ -16,7 +16,8 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
-<%-- <%
+
+<%--  <%
 	String connectionURL = "jdbc:mysql://localhost:3306/acme-handyworker";
 	Connection connection = null;
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -26,10 +27,10 @@
 	String QueryString = "SELECT * FROM configuration;";
 	rs = st.executeQuery(QueryString);
 	while (rs.next()) {
-		String banner = (String) rs.getObject(3);
+		String banner = rs.getObject(3).toString();
 		application.setAttribute("banner", banner);
 	}
-%> --%>
+%>   --%>
  <div>
 	<a href="#"><img src="${banner}"  width="500" height="200"/></a>
 </div>
@@ -42,9 +43,7 @@
 		<security:authorize access="isAnonymous()">
 	
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
-			<li><a href="customer/register.do"><spring:message code="master.page.customer.register" /></a></li>
-			<li><a href="handyworker/register.do"><spring:message code="master.page.handyworker.register" /></a></li>
-			<li><a href="sponsor/register.do"><spring:message code="master.page.sponsor.register" /></a></li>
+
 			<li><a href="tutorial/list.do"><spring:message code="master.page.tutorial.list" /></a></li>
 			
 
