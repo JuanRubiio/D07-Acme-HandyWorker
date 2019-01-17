@@ -28,23 +28,21 @@ public class WarrantyAdministratorController extends AbstractController {
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int warrantyId) {
-		ModelAndView res;
+		ModelAndView result;
 		Warranty warranty;
-
 		warranty = this.warrantyService.findOne(warrantyId);
+		result = new ModelAndView("warranty/show");
+		result.addObject("warranty", warranty);
 
-		res = this.createEditModelAndView(warranty);
-
-		return res;
+		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
+
 		ModelAndView res;
-		Warranty warranty;
-
+		final Warranty warranty;
 		warranty = this.warrantyService.create();
-
 		res = this.createEditModelAndView(warranty);
 
 		return res;
@@ -73,10 +71,14 @@ public class WarrantyAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int warrantyId) {
-		final ModelAndView res = new ModelAndView();
-		this.warrantyService.delete(warrantyId);
-		res.addObject("redict:list.do");
+		ModelAndView res;
+		Warranty warranty;
+		warranty = this.warrantyService.findOne(warrantyId);
+		Assert.notNull(warranty);
+		this.warrantyService.delete(warranty);
+		res = new ModelAndView("redirect:list.do");
 		return res;
 	}
 
@@ -111,7 +113,7 @@ public class WarrantyAdministratorController extends AbstractController {
 	//
 	//		return res;
 	//	}
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Warranty warranty, final BindingResult binding) {
 		ModelAndView res;
 
@@ -120,7 +122,7 @@ public class WarrantyAdministratorController extends AbstractController {
 		else
 			try {
 				this.warrantyService.save(warranty);
-				res = new ModelAndView("redict:list.do");
+				res = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
 				res = this.createEditModelAndView(warranty, "warranty.commit.error");
 			}

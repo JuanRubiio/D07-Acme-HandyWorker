@@ -11,33 +11,43 @@
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-<security:authorize access="hasRole('ADMIN')">  
-<display:table name="${warranties}" id="warranty" pagesize="5"
-	requestURI="${requestURI}" class="displaytag">
-	<display:column>
-		
-    
-			<a href="warranty/administrator/show.do?warrantyId=${warranty.id}"/>	<i class="far fa-eye"></i>
-			
-			
+<security:authorize access="hasRole('ADMIN')">
+	<display:table name="${warranties}" id="warranty" pagesize="5"
+		requestURI="${requestURI}" class="displaytag">
+		<display:column>
+
+			<security:authorize access="hasRole('ADMIN')">
+				<input type="submit" name="show"
+					value="<spring:message code="warranty.show" />"
+					onclick="javascript: relativeRedir('warranty/administrator/show.do?warrantyId=${warranty.id}');" />
+			</security:authorize>
 			<jstl:if test="${warranty.draft }">
-			<a href="warranty/administrator/edit.do?warrantyId=${warranty.id}"/>	<i class="fas fa-pencil-alt"></i>
-			<a href="warranty/administrator/delete.do?warrantyId=${warranty.id}"/>		<i class="fas fa-trash-alt"></i>
+				<security:authorize access="hasRole('ADMIN')">
+					<input type="submit" name="show"
+						value="<spring:message code="warranty.edit" />"
+						onclick="javascript: relativeRedir('warranty/administrator/edit.do?warrantyId=${warranty.id}');" />
+				</security:authorize>
 			</jstl:if>
-	</display:column>
-	<display:column property="title" titleKey="warranty.title" />
-	<display:column property="terms" titleKey="warranty.terms" />
-	<display:column property="laws" titleKey="warranty.laws" />
-	<display:column property="draft" titleKey="warranty.draft" />
-</display:table>
-<br />
+			<jstl:if test="${warranty.draft }">
+				<security:authorize access="hasRole('ADMIN')">
+						<input type="submit" name="delete"
+							value="<spring:message code="warranty.delete" />"
+							onclick="javascript: relativeRedir('warranty/administrator/delete.do?warrantyId=${warranty.id}');" />
+				</security:authorize>
+			</jstl:if>
+		</display:column>
+		<display:column property="title" titleKey="warranty.title" />
+		<display:column property="terms" titleKey="warranty.terms" />
+		<display:column property="laws" titleKey="warranty.laws" />
+		<display:column property="draft" titleKey="warranty.draft" />
+	</display:table>
+	<br />
 
 
-<spring:url
-	value="fixUpTask/customer/create.do"
-	var="add">
-	<i class="fas fa-plus"></i>
-</spring:url>
+	<security:authorize access="hasRole('ADMIN')">
+	<input type="submit" name="create"
+		value="<spring:message code="warranty.create" />"
+		onclick="javascript: relativeRedir('warranty/administrator/create.do');" />
+</security:authorize>
 </security:authorize>
 <br />
