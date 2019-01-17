@@ -1,7 +1,8 @@
+
 <%--
- * action-1.jsp
+ * edit.jsp
  *
- * Copyright (C) 2013 Universidad de Sevilla
+ * Copyright (C) 2016 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
@@ -17,41 +18,44 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<fieldset>
+	<form:form action="message/create.do" modelAttribute="message" method="post">
 
-<form:form action="message/create.do" modelAttribute="message">
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="sender" />
-	<form:hidden path="date" />
-	<form:hidden path="recipient" />
-	<form:hidden path="spam" />
+		<form:hidden path="id" />
+		<form:hidden path="version" />
+		<form:hidden path="sender" />
+		<form:hidden path="date" />
+		<form:hidden path="spam" />
 
-	<acme:textbox code="message.subject" path="subject" />
+		<acme:select path="recipient" code="message.recipient" items="${actors}"
+		itemLabel="name" />
+	
 
-	<acme:textarea code="message.body" path="body" />
+		<acme:textbox path="subject" code="message.subject" />
+		<acme:textbox path="body" code="message.body" />
+	
 
-	<spring:message code="message.recipient" />
-	<form:select path="recipient">
-		<form:option label="----" value="0" />
-		<form:options items="${actors}" itemLabel="name" itemValue="id" />
-	</form:select>
-	<form:errors cssClass="error" path="recipient" />
-	<br>
+		<form:label path="priority">
+			<spring:message code="message.priority" />:
+	</form:label>
+		<form:select path="priority">
+			<form:option value="HIGH" label="HIGH" />
+			<form:option value="NEUTRAL" label="NEUTRAL" />
+			<form:option value="LOW" label="LOW" />
+		</form:select>
+		<form:errors cssClass="error" path="priority" />
+		<br />
+		<br />
 
-	<spring:message code="message.priority" />
-	<form:select path="priority">
-		<form:option label="LOW" value="0" />
-		<form:option label="NEUTRAL" value="1" />
-		<form:option label="HIGH" value="2" />
-	</form:select>
-	<form:errors cssClass="error" path="priority" />
-	<br>
-	<acme:textbox code="message.tags" path="tags" />
 
-	<acme:submit name="save" code="message.save" />
+		<input type="submit" name="save"
+			value="<spring:message code="message.save" />" />&nbsp; 
+		
+		<input type="button" name="cancel"
+			value="<spring:message code="message.cancel" />"
+			onclick="javascript: window.location.replace('welcome/index.do');" />
+		<br />
 
-	<acme:cancel url="messagebox/list.do"
-		code="message.cancel" />
-
-</form:form>
+	</form:form>
+</fieldset>

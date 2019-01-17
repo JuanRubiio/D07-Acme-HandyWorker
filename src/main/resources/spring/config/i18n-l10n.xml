@@ -44,7 +44,7 @@
 		<value>/views/tutorial/messages</value>
 		<value>/views/endorsement/messages</value>
 		<value>/views/socialProfile/messages</value>
-			<value>/views/curriculum/messages</value>
+		<value>/views/curriculum/messages</value>
 		
 		
 	</util:list>

@@ -37,52 +37,100 @@ public class MessageActorController extends AbstractController {
 	private MessageService		messageService;
 
 
-	// Creating
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Message mess;
-		Collection<Actor> actors;
-		Actor actor;
+		Message message;
+		try {
+			message = this.messageService.create();
+			result = this.createModelAndView(message, null);
 
-		mess = this.messageService.create();
-		actors = this.actorService.findAll();
-		actor = this.actorService.getPrincipal();
-		actors.remove(actor);
-
-		result = new ModelAndView("message/create");
-		result.addObject("message", mess);
-		result.addObject("actors", actors);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/#");
+		}
 		return result;
 	}
 
-	// Save
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid Message mess, final BindingResult bindingResult) {
-		ModelAndView result;
-		Collection<Actor> actors;
-		Actor actor;
-
-		actors = this.actorService.findAll();
-		actor = this.actorService.getPrincipal();
-		actors.remove(actor);
-
-		if (bindingResult.hasErrors()) {
-			result = new ModelAndView("message/create");
-			result.addObject("mess", mess);
-			result.addObject("actors", actors);
+	public ModelAndView saveCreate(@Valid final Message message, final BindingResult result) {
+		ModelAndView res;
+		if (result.hasErrors()) {
+			res = this.createModelAndView(message, null);
+			res.addObject("categories", this.messageService.findAll());
 		} else
 			try {
-				mess = this.messageService.save(mess);
-				result = new ModelAndView("redirect:/messagebox/list.do");
+				this.messageService.save(message);
+				res = new ModelAndView("redirect:/message/list.do");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("message/create");
-				result.addObject("message", mess);
-				result.addObject("messageerror", "message.commit.error");
-				result.addObject("actors", actors);
+				res = this.createModelAndView(message, null);
+				res.addObject("categories", this.messageService.findAll());
 			}
-		return result;
+
+		return res;
 	}
+
+	private ModelAndView createModelAndView(final Message message, final String messageCode) {
+		Actor actor;
+		ModelAndView res;
+		Collection<Actor> actors;
+		actors = this.actorService.findAll();
+		actor = this.actorService.getPrincipal();
+		actors.remove(actor);
+		res = new ModelAndView("message/create");
+		res.addObject("message", message);
+		res.addObject("actors", actors);
+		res.addObject("message", messageCode);
+
+		return res;
+
+	}
+
+	//	// Creating
+	//	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	//	public ModelAndView create() {
+	//		ModelAndView result;
+	//		Message mess;
+	//		Collection<Actor> actors;
+	//		Actor actor;
+	//
+	//		mess = this.messageService.create();
+	//		actors = this.actorService.findAll();
+	//		actor = this.actorService.getPrincipal();
+	//		actors.remove(actor);
+	//
+	//		result = new ModelAndView("message/create");
+	//		result.addObject("mess", mess);
+	//		result.addObject("actors", actors);
+	//		return result;
+	//	}
+	//
+	//	// Save
+	//	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	//	public ModelAndView save(@Valid Message mess, final BindingResult bindingResult) {
+	//		ModelAndView result;
+	//		Collection<Actor> actors;
+	//		Actor actor;
+	//
+	//		actors = this.actorService.findAll();
+	//		actor = this.actorService.getPrincipal();
+	//		actors.remove(actor);
+	//
+	//		if (bindingResult.hasErrors()) {
+	//			result = new ModelAndView("message/create");
+	//			result.addObject("mess", mess);
+	//			result.addObject("actors", actors);
+	//		} else
+	//			try {
+	//				mess = this.messageService.save(mess);
+	//				result = new ModelAndView("redirect:/messagebox/list.do");
+	//			} catch (final Throwable oops) {
+	//				result = new ModelAndView("message/create");
+	//				result.addObject("message", mess);
+	//				result.addObject("messageerror", "message.commit.error");
+	//				result.addObject("actors", actors);
+	//			}
+	//		return result;
+	//	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int messageBoxId) {

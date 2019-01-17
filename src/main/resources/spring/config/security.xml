@@ -69,7 +69,12 @@
 		<security:intercept-url pattern="/complaint/customer/**" access="hasRole('CUSTOMER')" />
 		
 		
-
+	<!-- Carlos -->	
+		<security:intercept-url pattern="/application/handyWorker/**" access="hasRole('HANDYWORKER')" /> 
+		<security:intercept-url pattern="/application/customer/**" access="hasRole('CUSTOMER')" /> 
+		<security:intercept-url pattern="/finder/handyWorker/search.do" access="hasRole('HANDYWORKER')" /> 
+		<security:intercept-url pattern="/phase/handyWorker/**" access="hasRole('HANDYWORKER')" /> 
+		
 		<security:intercept-url pattern="/actor/register.do" access="isAnonymous()" />
 
 
@@ -92,12 +97,7 @@
 			logout-success-url="/" 
 			invalidate-session="true" />
 			
-		<!-- Carlos -->	
-		<security:intercept-url pattern="/application/handyWorker/**" access="hasRole('HANDYWORKER')" /> 
-		<security:intercept-url pattern="/application/customer/**" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/finder/handyWorker/search.do" access="hasRole('HANDYWORKER')" /> 
-		<security:intercept-url pattern="/phase/handyWorker/**" access="hasRole('HANDYWORKER')" /> 
-		
+	
 		
 			
 	</security:http>

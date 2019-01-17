@@ -19,8 +19,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="category/administrator/create.do"
-	modelAttribute="category" method="post">
+<form:form action="category/administrator/create.do" modelAttribute="category" method="post">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
